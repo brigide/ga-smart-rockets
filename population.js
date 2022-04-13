@@ -1,7 +1,7 @@
 class Population {
     constructor() {
         this.rockets = [];
-        this.size = 100;
+        this.size = popsize;
         this.matingPool = [];
 
         for (let i = 0; i < this.size; i++) {
@@ -21,6 +21,7 @@ class Population {
         for (let i = 0; i < this.size; i++) {
             this.rockets[i].fitness /= maxfitness;
         }
+        console.log(maxfitness);
 
         this.matingPool = [];
         for (let i = 0; i < this.size; i++) {
@@ -43,6 +44,12 @@ class Population {
             newRockets[i] = new Rocket(child)
         }
         this.rockets = newRockets;
+
+        generation++;
+        generationP.html('generation: ' + generation);
+        console.log('generation success: ' + successCount);
+        successCount = 0;
+        successP.html('generation success: ' + successCount);
     }
 
     run() {
