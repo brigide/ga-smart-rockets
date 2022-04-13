@@ -2,10 +2,40 @@ class Population {
     constructor() {
         this.rockets = [];
         this.size = 100;
+        this.matingPool = [];
 
         for (let i = 0; i < this.size; i++) {
             this.rockets[i] = new Rocket();
         }
+    }
+
+    evaluate() {
+        let maxfitness = 0;
+        for (let i = 0; i < this.size; i++) {
+            this.rockets[i].calculateFitness();
+            if (this.rockets[i].fitness > maxfitness) {
+                maxfitness = this.rockets[i].fitness;
+            }
+        }
+
+        for (let i = 0; i < this.size; i++) {
+            this.rockets[i].fitness /= maxfitness;
+        }
+
+        this.matingPool = [];
+        for (let i = 0; i < this.size; i++) {
+            let n = this.rockets[i].fitness * 100;
+            for (let j = 0; j < n; j++) {
+                this.matingPool.add(this.rockets[i]);
+            }
+        }
+    }
+
+    selection() {
+        let parentA = random(this.matingPool).dna;
+        let parentB = random(this.matingPool).dna;
+
+        let child = parentA.crossover(parentB);
     }
 
     run() {
