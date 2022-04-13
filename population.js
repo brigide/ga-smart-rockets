@@ -26,16 +26,23 @@ class Population {
         for (let i = 0; i < this.size; i++) {
             let n = this.rockets[i].fitness * 100;
             for (let j = 0; j < n; j++) {
-                this.matingPool.add(this.rockets[i]);
+                this.matingPool.push(this.rockets[i]);
             }
         }
     }
 
     selection() {
-        let parentA = random(this.matingPool).dna;
-        let parentB = random(this.matingPool).dna;
+        let newRockets = [];
+        for (let i = 0; i < this.rockets.length; i++) {
+            let parentA = random(this.matingPool).dna;
+            let parentB = random(this.matingPool).dna;
+    
+            let child = parentA.crossover(parentB);
+            child.mutation();
 
-        let child = parentA.crossover(parentB);
+            newRockets[i] = new Rocket(child)
+        }
+        this.rockets = newRockets;
     }
 
     run() {

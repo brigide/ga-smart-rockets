@@ -3,7 +3,7 @@ let lifespan = 200;
 let lifeParagraph;
 let count = 0;
 let target;
-
+let mutation = 0.01;
 
 function setup() {
     createCanvas(400, 300);
@@ -18,7 +18,8 @@ function draw() {
     lifeParagraph.html(count);
     count++;
     if (count == lifespan) {
-        population = new Population();
+        population.evaluate();
+        population.selection();
         count = 0;
     }
 

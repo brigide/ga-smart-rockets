@@ -1,9 +1,15 @@
 class Rocket {
-    constructor() {
+    constructor(dna) {
         this.pos = createVector(width / 2, height);
         this.vel = createVector(0, -1);
         this.acc = createVector();
-        this.dna = new DNA();
+        this.completed = false;
+        if (dna) {
+            this.dna = dna;
+        }
+        else {
+            this.dna = new DNA();
+        }
 
         this.fitness = 0;
     }
@@ -15,14 +21,23 @@ class Rocket {
     calculateFitness() {
         let distance = dist(this.pos.x, this.pos.y, target.x, target.y);
         this.fitness = map(distance, 0, width, width, 0);
+        if (this.completed) { 
+            this.fitness *= 10;
+        }
     }
 
     update() {
+        let distance = dist(this.pos.x, this.pos.y, target.x, target.y);
+        if (distance < 10) {
+            this.completed = true;
+            this.pos = target.copy();
+        }
         this.applyForce(this.dna.genes[count]);
-
-        this.vel.add(this.acc);
-        this.pos.add(this.vel);
-        this.acc.mult(0);
+        if (!this.completed) {
+            this.vel.add(this.acc);
+            this.pos.add(this.vel);
+            this.acc.mult(0);
+        }
     }
 
     show() {
